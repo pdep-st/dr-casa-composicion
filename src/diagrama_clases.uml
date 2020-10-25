@@ -1,0 +1,71 @@
+
+@startuml
+Persona -> "*" Enfermedad
+
+class Persona {
+  enfermedades
+  temperatura
+  celulas
+
+  contraer(enfermedad)
+  vivir()
+  enfermedadesSinCurar()
+}
+
+EnfermedadAutoinmune -up-|> EnfermedadCelular
+EnfermedadInfecciosa -up-|> EnfermedadCelular
+
+abstract class EnfermedadCelular {
+  celulasAmenazadas
+
+  atenuar(dosis)
+  curada()
+  {abstract} producirEfecto(persona)
+  {abstract} esAgresiva(persona)
+  
+}
+
+class EnfermedadAutoinmune {
+
+}
+
+class EnfermedadInfecciosa {
+  cantidadEfectos
+  reproducir()
+
+}
+
+interface Enfermedad {
+  producirEfecto(persona)
+  curada()
+  atenuar(dosis)
+  esAgresiva(persona)
+}
+
+EnfermedadCelular .up.|> Enfermedad
+hipotermia .up.|> Enfermedad
+
+object hipotermia <<WKO>> {
+  producirEfecto(persona)
+  curada()
+  atenuar(dosis)
+  esAgresiva(persona)
+}
+
+class Medico {
+    Puesto puesto
+    atenderA(persona)
+    contraer(enfermedad)
+}
+
+interface Puesto {
+    atenderA(persona)
+}
+
+Medico -> Puesto
+
+PuestoBase .up.|> Puesto
+JefeMedico .up.|> Puesto
+JefeMedico -> "*" Medico
+Medico -up|> Persona
+@enduml
